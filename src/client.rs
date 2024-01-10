@@ -2,6 +2,7 @@ use crossterm::cursor::MoveTo;
 use crossterm::event::{read,poll, Event, KeyCode, KeyModifiers};
 use crossterm::terminal::{self, Clear, ClearType};
 use crossterm::QueueableCommand;
+use std::env;
 use std::io::{stdout, Write, Read, ErrorKind,};
 use std::net::TcpStream;
 use std::time::Duration;
@@ -27,8 +28,13 @@ fn chat_window(stdout: &mut impl Write,chat:&[String],boundary: Rect) {
 }
 
 fn main() {
+    
 
-    let mut stream = TcpStream::connect("127.0.0.1:6969").unwrap();
+    let mut args = env::args();
+    let _program = args.next().unwrap();
+    let ip = args.next().unwrap();
+
+    let mut stream = TcpStream::connect(&format!("{ip}:6969")).unwrap();
     let _ = stream.set_nonblocking(true).unwrap();
 
 
